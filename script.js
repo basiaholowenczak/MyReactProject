@@ -1,10 +1,13 @@
 const searchBox = document.querySelector('.searchBox');
 const searchBtn = document.querySelector('.searchBtn');
 const recipeContainer = document.querySelector('.recipe-container');
+const recipeDetailsContent = document.querySelector('.recipe-details');
+const recipeCloseBtn = document.querySelector('.recipe-close-btn');
 
 //Function to get recipes
 const fetchRecipes = async (query) => {
     recipeContainer.innerHTML = "<h2> Fetching recipes... </h2>";
+    try{
     const data = await fetch('www.themealdb.com/api/json/v1/1/search.php?s=${query}')
     const response = await data.json();
 
@@ -18,13 +21,53 @@ const fetchRecipes = async (query) => {
         button.textContent = "View Recipe";
         recipeDiv.appendChild(button);
 
+        //Adding EventListener to recipe button 
+        button.addEventListener('click', ()=> {
+            openRecipePopup(meal);
+        });
+        
+
         recipeContainer.appendChild(recipeDiv);
     });
+    }
+    catch(error){
+        recipeContainer.innerHTML = "<h2> Error in Fetching Recipes... </h2>";
+    }
 }
+
+//Function to fetch ingredients and measurements
+const fetchIngredients =(meal) => {
+
+let ingredientsList = "";
+for(let i = 1; i<20: i++){
+    const ingredient = meal['strIngredient${i}'];
+    if (ingredient) {
+        const measure = meal['strMeasure${i}'];
+        ingredientsList += '<li>${measure} ${ingredient}</li>'
+    }
+    else{
+        break;
+    }
+}
+    return ingredientsList;
+}
+
+const openRecipePopup = (meal) => {
+    recipeDetailsContent.textContent = '<h2 class="recipeName"> ${meal.strMeal} </h2> <h3> Ingredients: </h3> <ul class="ingredientsList"> ${fetchIngredients(meal)}</ul> <div class = "recipeInstructions"> <h3>Instructions:</h3> <p class ="recipeInstructinos" ${meal.strInstructions} </p> </div>' 
+
+    recipeDetailsContent.parentElement.style.display = "block";
+}
+recipeCloseBtn.addEventListener('click', ()=> {
+    recipeDetailsContent.parentElement.style.display = "none";
+});
 
 searchBtn.addEventListener('click', (e)=> {
     e.preventDefault();
     const searchInput = searchBox.value.trim();
+    if(!searchInput){
+        recipeContainer.innerHTML = '<h2> Type the meal in the search box.</h2?';
+        return;
+    }
     fetchRecipes(searchInput);
     //console.log("Button Clicked");
 });
