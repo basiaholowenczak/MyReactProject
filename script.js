@@ -8,7 +8,7 @@ const recipeCloseBtn = document.querySelector('.recipe-close-btn');
 const fetchRecipes = async (query) => {
     recipeContainer.innerHTML = "<h2> Fetching recipes... </h2>";
     try{
-    const data = await fetch('www.themealdb.com/api/json/v1/1/search.php?s=${query}')
+    const data = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
     const response = await data.json();
 
     recipeContainer.innerHTML = "";
@@ -40,9 +40,9 @@ const fetchIngredients =(meal) => {
 
 let ingredientsList = "";
 for(let i = 1; i<20; i++){
-    const ingredient = meal['strIngredient${i}'];
+    const ingredient = meal[`strIngredient${i}`];
     if (ingredient) {
-        const measure = meal['strMeasure${i}'];
+        const measure = meal[`strMeasure${i}`];
         ingredientsList += '<li>${measure} ${ingredient}</li>'
     }
     else{
@@ -53,7 +53,7 @@ for(let i = 1; i<20; i++){
 }
 
 const openRecipePopup = (meal) => {
-    recipeDetailsContent.textContent = '<h2 class="recipeName"> ${meal.strMeal} </h2> <h3> Ingredients: </h3> <ul class="ingredientsList"> ${fetchIngredients(meal)}</ul> <div class = "recipeInstructions"> <h3>Instructions:</h3> <p class ="recipeInstructinos" ${meal.strInstructions} </p> </div>' 
+    recipeDetailsContent.innerHTML = `<h2 class="recipeName">${meal.strMeal}</h2> <h3>Ingredients:</h3> <ul class="ingredientsList">${fetchIngredients(meal)}</ul> <div class="recipeInstructions"><h3>Instructions:</h3> <p class="recipeInstructions">${meal.strInstructions}</p> </div>`; 
 
     recipeDetailsContent.parentElement.style.display = "block";
 }
@@ -65,7 +65,7 @@ searchBtn.addEventListener('click', (e)=> {
     e.preventDefault();
     const searchInput = searchBox.value.trim();
     if(!searchInput){
-        recipeContainer.innerHTML = '<h2> Type the meal in the search box.</h2?';
+        recipeContainer.innerHTML = '<h2>Type the meal in the search box.</h2>';
         return;
     }
     fetchRecipes(searchInput);
