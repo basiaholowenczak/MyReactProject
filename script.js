@@ -62,6 +62,7 @@ recipeCloseBtn.addEventListener('click', () => {
 });
 
 searchBtn.addEventListener('click', (e) => {
+    console.log("search button pushed")
     e.preventDefault();
     const searchInput = searchBox.value.trim();
     if (!searchInput) {
