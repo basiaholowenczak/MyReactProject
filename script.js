@@ -1,18 +1,15 @@
-const searchBox = document.querySelector('.searchBox');
-const searchBtn = document.querySelector('.searchBtn');
-const recipeContainer = document.querySelector('.recipe-container');
-const recipeDetailsContent = document.querySelector('.recipe-details');
-const recipeCloseBtn = document.querySelector('.recipe-close-btn');
+    const searchBox = document.querySelector('.searchBox');
+    const searchBtn = document.querySelector('.searchBtn');
+    const recipeContainer = document.querySelector('.recipe-container');
+    const recipeDetailsContent = document.querySelector('.recipe-details');
+    const recipeCloseBtn = document.querySelector('.recipe-close-btn');
 
 // Function to get recipes
 const fetchRecipes = async (query) => {
-    console.log("Fetching recipes for query:", query);
     recipeContainer.innerHTML = "<h2> Fetching recipes... </h2>";
     try {
         const data = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`);
-        console.log("Fetch data:", data);
         const response = await data.json();
-        console.log("API response:", response);
 
         recipeContainer.innerHTML = "";
         response.meals.forEach(meal => {
@@ -62,7 +59,6 @@ recipeCloseBtn.addEventListener('click', () => {
 });
 
 searchBtn.addEventListener('click', (e) => {
-    console.log("search button pushed")
     e.preventDefault();
     const searchInput = searchBox.value.trim();
     if (!searchInput) {
@@ -71,3 +67,4 @@ searchBtn.addEventListener('click', (e) => {
     }
     fetchRecipes(searchInput);
 });
+
