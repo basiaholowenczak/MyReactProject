@@ -118,7 +118,7 @@ form button[type="submit"]:hover,
 
 /* Recipe Details */
 .recipe-details { 
-    display: block;
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
